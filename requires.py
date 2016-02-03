@@ -30,6 +30,6 @@ class MemcachedRequires(RelationBase):
         """
         for conv in self.conversations():
             priv_addy = conv.get_remote('private-address')
-            priv_port =  conv.get_remote('port')
+            priv_port =  conv.get_remote('tcp-port')
             if priv_addy and priv_port:
                 yield (priv_addy, priv_port)
