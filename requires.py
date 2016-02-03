@@ -19,7 +19,7 @@ class MemcachedRequires(RelationBase):
 
     def memcache_hosts(self):
         """
-        Return a list of services requesting databases.
+        Return a list of memcache host,port tuples.
         Example usage::
 
             @when('memcache.available')
