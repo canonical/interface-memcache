@@ -16,19 +16,19 @@ class MemcachedRequires(RelationBase):
     def broken(self):
         self.remove_state('{relation_name}.available')
 
-    def memcache_hosts(self):
-        """
-        Return a list of memcache host,port tuples.
-        Example usage::
 
-            @when('memcache.available')
-            def render_config(memcache):
-                render_template('django.conf', context={
-                    'memcache_hosts': memcache.memcache_hosts(),
-                })
-        """
-        for conv in self.conversations():
-            priv_addy = conv.get_remote('private-address')
-            priv_port =  conv.get_remote('tcp-port')
-            if priv_addy and priv_port:
-                yield (priv_addy, priv_port)
+    def get_remote_all(self, key, default=None):
+        '''Return a list of all values presented by remote units for key'''
+        values = []
+        for conversation in self.conversations():
+            for relation_id in conversation.relation_ids:
+                for unit in hookenv.related_units(relation_id):
+                    value = hookenv.relation_get(key,
+                                                 unit,
+                                                 relation_id) or default
+                    if value:
+                        values.append(value)
+        return list(set(values))
+
+    def memcache_hosts(self):
+        return self.get_remote_all('private-address')
