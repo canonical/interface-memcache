@@ -6,7 +6,6 @@ from charms.reactive import scopes
 
 class MemcachedRequires(RelationBase):
     scope = scopes.UNIT
-    auto_accessors = ['private-address']
 
     @hook('{requires:memcache}-relation-{joined,changed}')
     def changed(self):
@@ -16,7 +15,9 @@ class MemcachedRequires(RelationBase):
 
     @hook('{requires:memcache}-relation-{broken,departed}')
     def broken(self):
+        self.remove_state('{relation_name}.connected')
         self.remove_state('{relation_name}.available')
+
 
     def get_remote_all(self, key, default=None):
         '''Return a list of all values presented by remote units for key'''
