@@ -10,13 +10,13 @@ class MemcachedRequires(RelationBase):
 
     @hook('{requires:memcache}-relation-{joined,changed}')
     def changed(self):
+        self.set_state('{relation_name}.connected')
         if self.memcache_hosts():
             self.set_state('{relation_name}.available')
 
     @hook('{requires:memcache}-relation-{broken,departed}')
     def broken(self):
         self.remove_state('{relation_name}.available')
-
 
     def get_remote_all(self, key, default=None):
         '''Return a list of all values presented by remote units for key'''
