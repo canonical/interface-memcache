@@ -6,6 +6,7 @@ from charms.reactive import scopes
 
 class MemcachedRequires(RelationBase):
     scope = scopes.UNIT
+    auto_accessors = ['private-address']
 
     @hook('{requires:memcache}-relation-{joined,changed}')
     def changed(self):
