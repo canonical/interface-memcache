@@ -33,4 +33,4 @@ class MemcachedRequires(RelationBase):
         return list(set(values))
 
     def memcache_hosts(self):
-        return self.get_remote_all('private-address')
+        return sorted(self.get_remote_all('private-address'))
