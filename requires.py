@@ -1,4 +1,5 @@
 from charmhelpers.core import hookenv
+from charmhelpers.contrib.network import ip
 from charms.reactive import hook
 from charms.reactive import RelationBase
 from charms.reactive import scopes
@@ -6,6 +7,15 @@ from charms.reactive import scopes
 
 class MemcachedRequires(RelationBase):
     scope = scopes.UNIT
+
+    @hook('{requires:memcache}-relation-joined}')
+    def joined(self):
+        hostname = ip.get_relation_ip(
+            interface=self.conversation().relation_name
+        )
+        self.set_remote({
+            'private-address': hostname
+        })
 
     @hook('{requires:memcache}-relation-{joined,changed}')
     def changed(self):
