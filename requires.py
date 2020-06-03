@@ -45,6 +45,13 @@ class MemcachedRequires(RelationBase):
                         values.append(value)
         return list(set(values))
 
+    def request_restart(self):
+        """Request a restart of a set of remote services"""
+        relation_info = {
+            'restart-trigger': str(uuid.uuid4()),
+        }
+        self.set_remote(**relation_info)
+
     def memcache_hosts(self):
         """Return a list of memcache hosts"""
         return sorted(self.get_remote_all('private-address'))
