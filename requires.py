@@ -1,3 +1,5 @@
+import uuid
+
 from charmhelpers.core import hookenv
 from charmhelpers.contrib.network import ip
 from charms.reactive import hook
