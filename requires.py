@@ -27,7 +27,6 @@ class MemcachedRequires(RelationBase):
             # this unit's conversation has a host and port
             conv.set_state('{relation_name}.available')
 
-
     @hook('{requires:memcache}-relation-{broken,departed}')
     def broken(self):
         conv = self.conversation()
@@ -52,7 +51,8 @@ class MemcachedRequires(RelationBase):
         relation_info = {
             'restart-trigger': str(uuid.uuid4()),
         }
-        self.set_remote(**relation_info)
+        for conversation in self.conversations():
+            conversation.set_remote(**relation_info)
 
     def memcache_hosts(self):
         """Return a list of memcache hosts"""
